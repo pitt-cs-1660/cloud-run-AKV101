@@ -120,7 +120,19 @@ async function vote(team) {
       /*
        * ++++ YOUR CODE HERE ++++
        */
-      window.alert(`Not implemented yet!`);
+      const response = await fetch("/api/vote",{
+        method: "POST",
+        headers:{
+          "Content-Type": "application/x-ww-form-urlencoded",
+          "Authorization": 'Bearer ${token}'
+        },
+        body: 'team=${encodeURIComponent(team)}'
+      });
+      if (response.ok) {
+        window.alert(`Vote submitted successfully for ${team}`);
+      } else {
+        window.alert(`Error: ${result.message}`);
+      }
 
     } catch (err) {
       console.log(`Error when submitting vote: ${err}`);

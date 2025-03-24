@@ -1,3 +1,4 @@
+
 /**
  * This is the client-side code that interacts with Firebase Auth to sign in users, updates the UI if the user is signed in,
  * and sends the user's vote to the server.
@@ -7,6 +8,7 @@
  * NOTE: YOU ONLY NEED TO MODIFY THE VOTE FUNCTION AT THE BOTTOM OF THIS FILE.
  */
 firebase.initializeApp(config);
+
 // Watch for state change from sign in
 function initApp() {
   firebase.auth().onAuthStateChanged(user => {
@@ -85,6 +87,7 @@ function signOut() {
 
 // Toggle Sign in/out button
 function toggle() {
+  console.log("Sign In button clicked.");
   if (authDisabled()) {
     window.alert('Auth is disabled.');
     return;
@@ -117,12 +120,12 @@ async function vote(team) {
       const token = await createIdToken();
 
       const response = await fetch("https://tabs-vs-spaces-938402721151.us-central1.run.app", {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",  
-          "Authorization": `Bearer ${token}`
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": `Bearer ${token}`,
         },
-        body: new URLSearchParams({ team }) 
+        body: new URLSearchParams({ team }),
       });
 
       if (response.ok) {
@@ -130,12 +133,11 @@ async function vote(team) {
         window.alert(`Vote submitted successfully.`);
         window.location.reload();
       }
-    }
-      catch (err) {
-        console.log(`Error when submitting vote: ${err}`);
-        window.alert('Please try again!');
-      }
       
+    } catch (err) {
+      console.log(`Error when submitting vote: ${err}`);
+      window.alert('Something went wrong... Please try again!');
+    }
   } else {
     window.alert('User not signed in.');
   }

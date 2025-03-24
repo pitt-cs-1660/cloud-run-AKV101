@@ -14,8 +14,7 @@ problem. Users can login and make their voice heard!
 You will deploy the web server on **Google Cloud Run**, use **Google Cloud Identity Platform** for OAuth2 authentication, and **Firestore** for handling user data and application-related information.
 
 ---
-
-### YOUR APPLICATION URL HERE!
+https://tabs-vs-spaces-938402721151.us-central1.run.app
 
 ---
 

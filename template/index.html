@@ -55,19 +55,15 @@
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       <!-- add Event Listener "click" to the vote -->
-      document.getElementById("signInButton").addEventListener("click", function () {
-        console.log('Toggle button clicked');
-        toggle(); // This function is already implemented
-      });
-
       document.getElementById("voteTabs").addEventListener("click", function () {
-        console.log('Toggle vote clicked');
-        vote("TABS");
-      });
+         vote("TABS");
+       });
       document.getElementById("voteSpaces").addEventListener("click", function () {
-        console.log('Toggle space clicked');
-        vote("SPACES");
-      });
+         vote("SPACES");
+       });
+      document.getElementById("signInButton").addEventListener("click", function () {
+         toggle();
+       });
     })
   </script>
 </body>

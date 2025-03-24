@@ -6,7 +6,7 @@
  *
  * NOTE: YOU ONLY NEED TO MODIFY THE VOTE FUNCTION AT THE BOTTOM OF THIS FILE.
  */
-
+firebase.initializeApp(config);
 // Watch for state change from sign in
 function initApp() {
   firebase.auth().onAuthStateChanged(user => {
@@ -107,41 +107,6 @@ function toggle() {
  * @param team
  * @returns {Promise<void>}
  */
-// async function vote(team) {
-//   console.log(`Submitting vote for ${team}...`);
-//   if (firebase.auth().currentUser || authDisabled()) {
-//     // Retrieve JWT to identify the user to the Identity Platform service.
-//     // Returns the current token if it has not expired. Otherwise, this will
-//     // refresh the token and return a new one.
-//     try {
-//       const token = await createIdToken();
-
-//       /*
-//        * ++++ YOUR CODE HERE ++++
-//        */
-//       const response = await fetch("/api/vote",{
-//         method: "POST",
-//         headers:{
-//           "Content-Type": "application/x-www-form-urlencoded",
-//           "Authorization": `Bearer ${token}`
-//         },
-//         body: `team=${encodeURIComponent(team)}`
-//       });
-//       if (response.ok) {
-//         const result = await response.json();  
-//         window.alert(`Vote submitted successfully for ${team}`);
-//       } else {
-//         window.alert(`Error: ${result.message}`);
-//       }
-
-//     } catch (err) {
-//       console.log(`Error when submitting vote: ${err}`);
-//       window.alert('Something went wrong... Please try again!');
-//     }
-//   } else {
-//     window.alert('User not signed in.');
-//   }
-//}
 async function vote(team) {
   console.log(`Submitting vote for ${team}...`);
   if (firebase.auth().currentUser || authDisabled()) {
@@ -151,31 +116,26 @@ async function vote(team) {
     try {
       const token = await createIdToken();
 
-      // Make the POST request to the FastAPI backend
-      const response = await fetch("/api/vote", {
+      const response = await fetch("https://tabs-vs-spaces-938402721151.us-central1.run.app", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",  // Corrected Content-Type
+          "Content-Type": "application/x-www-form-urlencoded",  
           "Authorization": `Bearer ${token}`
         },
-        body: `team=${encodeURIComponent(team)}`  // Send the team as form data
+        body: new URLSearchParams({ team }) 
       });
 
       if (response.ok) {
-        // Parse the JSON response
-        const result = await response.json();  
-        // Display a success message
-        window.alert(`Vote submitted successfully for ${team}`);
-      } else {
-        // Handle the error case if the response is not OK
-        const result = await response.json();
-        window.alert(`Error: ${result.message}`);
+        console.log('Vote submitted successfully.');
+        window.alert(`Vote submitted successfully.`);
+        window.location.reload();
       }
-
-    } catch (err) {
-      console.log(`Error when submitting vote: ${err}`);
-      window.alert('Something went wrong... Please try again!');
     }
+      catch (err) {
+        console.log(`Error when submitting vote: ${err}`);
+        window.alert('Please try again!');
+      }
+      
   } else {
     window.alert('User not signed in.');
   }

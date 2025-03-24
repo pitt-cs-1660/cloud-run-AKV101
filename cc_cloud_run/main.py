@@ -25,11 +25,16 @@ async def read_root(request: Request):
     # stream all votes; count tabs / spaces votes, and get recent votes
     votes = votes_collection.stream()
     vote_data = []
+    spaces_count  = 0
+    tabs_count = 0
     for v in votes:
+        vote = v.to_dict()
+        if vote["team"] == "TABS":
+            tabs_count += 1
+        else:
+            spaces_count += 1
         vote_data.append(v.to_dict())
-    tabs_count = sum(1 for vote in vote_data if vote["team"] == "TABS")
-    spaces_count = sum(1 for vote in vote_data if vote["team"] == "SPACES")
-
+  
     # ====================================
     # ++++ STOP CODE ++++
     # ====================================
@@ -53,9 +58,6 @@ async def create_vote(team: Annotated[str, Form()]):
         "team": team,
         "time_cast": datetime.datetime.utcnow().isoformat()
     })
-
-    # create a new vote document in firestore
-    return {"message": "Vote recorded!"}
 
     # ====================================
     # ++++ STOP CODE ++++
